@@ -32,7 +32,7 @@ def test_rejects_insufficient_position(broker):
     with pytest.raises(ValueError):
         broker.market_order(SELL, 1, 10)
 
-def bad_side(broker):
+def test_bad_side(broker):
     with pytest.raises(ValueError):
         broker.market_order(SIDE_BAD, 1, 10)
 
