@@ -8,3 +8,11 @@ def test_buy_and_sell_updates_cash_and_pos(broker):
 def test_rejects_bad_orders(broker):
     with pytest.raises(ValueError):
         broker.market_order("BUY", 0, 10)
+
+def test_rejects_insufficient_cash(broker):
+    with pytest.raises(ValueError):
+        broker.market_order("BUY", 200, 10)
+
+def test_rejects_insufficient_position(broker):
+    with pytest.raises(ValueError):
+        broker.market_order("SELL", 1, 10)
