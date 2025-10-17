@@ -6,6 +6,10 @@ class VolatilityBreakoutStrategy:
         self.k = k
 
     def signals(self, prices: pd.Series):
+        # exception handling 'Negative' price
+        if (prices < 0).any():
+            raise ValueError("Prices must be non-negative") 
+
         signals = pd.Series(0, index=prices.index)
         if len(prices) > 1:
             returns = prices.pct_change().fillna(0)
