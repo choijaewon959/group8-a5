@@ -17,5 +17,7 @@ class Broker:
                 raise ValueError("Insufficient position for sell order")
             self.cash += qty * price
             self.position -= qty
+        elif side == "HOLD":
+            pass  # No action needed for HOLD
         else:
-            raise ValueError("Side must be 'BUY' or 'SELL'")
+            raise ValueError("Side must be 'BUY', 'SELL' or 'HOLD'")
