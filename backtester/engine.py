@@ -1,6 +1,4 @@
 import pandas as pd
-from strategy import VolatilityBreakoutStrategy
-from engine import *
 
 class Backtester:
     def __init__(self, strategy, broker):
