@@ -1,21 +1,5 @@
 # Assigment 5: Testing & CI in Financial Engineering
 
-- **Duration:** ~5–6 hours
-- **Focus:** Unit tests, coverage, and CI for a minimal daily-bar backtester (PnL is *not* the goal—engineering discipline is).
-
----
-
-## 🎯 Learning Objectives
-
-* Design testable components (data loader, strategy, broker, backtester).
-* Write focused unit tests with `pytest`, fixtures, and mocks.
-* Measure and enforce coverage (target ≥90%) and keep tests fast.
-* Wire up GitHub Actions to run tests + coverage on every push/PR.
-
----
-
-## 📘 What You’ll Build
-
 A tiny daily backtester with:
 
 * **PriceLoader:** returns a `pandas.Series` of prices for a single symbol (use synthetic data for tests).
@@ -62,28 +46,7 @@ trading-ci-lab/
 
 ---
 
-## 🧩 Part 1 — CI Wiring (30–45 min)
-
-Create a GitHub repo and add workflow:
-
-```yaml
-# .github/workflows/ci.yml
-name: CI Pipeline
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - run: pip install -r requirements.txt
-      - run: coverage run -m pytest -q
-      - run: coverage report --fail-under=90
-```
-
-### requirements.txt (minimum)
+### requirements.txt
 
 ```
 pytest
@@ -95,6 +58,10 @@ numpy
 > 💡 *Tip:* Add a coverage badge locally with `coverage-badge` (optional).
 
 ---
+
+# My Project
+![Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen)
+
 
 ## 🧩 Part 2 — Minimal Components (45–60 min)
 
@@ -137,20 +104,6 @@ class Backtester:
     def run(self, prices: pd.Series):
         pass
 ```
-
----
-
-## 🧩 Part 3 — Tests, Fixtures, and Mocks (2–3 hours)
-
-Write **focused** tests. Keep them deterministic and fast.
-
-### Required Tests
-
-* **Strategy logic:** signal generation of x-day volatility breakout.
-* **Broker behavior:** buy/sell adjusts cash/position correctly, rejects bad inputs, raises on insufficient cash/shares.
-* **Engine loop:** executes trades; final equity matches cash + pos×price.
-* **Edge cases:** empty series, constant price series, NaNs at head, very short series.
-* **Failure handling:** demonstrate one mocked failure path (e.g., broker raising) and assert it propagates/logs as expected.
 
 ---
 
@@ -212,8 +165,6 @@ def test_engine_uses_tminus1_signal(prices, broker, strategy, monkeypatch):
     assert broker.cash == 1000 - float(prices.iloc[10])
 ```
 
-> Use `unittest.mock` / `MagicMock` and monkey-patching sparingly to isolate external dependencies; test your core logic directly.
-
 ---
 
 ## 🧩 Part 4 — Coverage & Reporting (30–45 min)
@@ -225,8 +176,6 @@ coverage run -m pytest -q
 coverage report -m
 coverage html
 ```
-
-CI must **fail** if coverage < 90%:
 
 ```bash
 coverage report --fail-under=90
@@ -246,28 +195,3 @@ Commit the HTML report (optional) or attach screenshots in the README.
 
 ---
 
-## 🧮 Grading Rubric (100 pts)
-
-| Category                     | Points | Description                                                         |
-| ---------------------------- | ------ | ------------------------------------------------------------------- |
-| Unit tests quality & breadth | 40     | Clear, isolated, meaningful assertions; good edge-case coverage.    |
-| Coverage                     | 20     | ≥90% lines (18 pts for 90–94, 20 pts for ≥95).                      |
-| CI integration               | 20     | Workflow runs on push/PR, fails on low coverage, fast and reliable. |
-| Design & clarity             | 10     | Simple, readable code; minimal but sensible abstractions.           |
-| Determinism & speed          | 10     | No network, seeded/synthetic data, suite < 60s.                     |
-
----
-
-## 💡 Bonus Ideas (Optional)
-
-* Branch coverage gate (`--fail-under=90 --include=backtester/* --branch`).
-* Lint/type checks in CI (`ruff`, `mypy`) as separate jobs.
-* Mocked “order rejection” path and retry/backoff test.
-
----
-
-## 🧠 Notes for Students
-
-* Real data is allowed, but **all tests must run offline** using generated or cached data (prefer generated to keep CI fast).
-* Keep strategies simple; **depth of testing > strategy creativity.**
-* Commit early; use PRs to watch CI feedback like a real quant workflow.
