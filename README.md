@@ -1,4 +1,6 @@
 # Assigment 5: Testing & CI in Financial Engineering
+![Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen)
+
 
 A tiny daily backtester with:
 
@@ -53,116 +55,6 @@ pytest
 coverage
 pandas
 numpy
-```
-
-> 💡 *Tip:* Add a coverage badge locally with `coverage-badge` (optional).
-
----
-
-# My Project
-![Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen)
-
-
-## 🧩 Part 2 — Minimal Components (45–60 min)
-
-Implement only what you need to support tests:
-
-```python
-# backtester/strategy.py
-import numpy as np
-import pandas as pd
-
-class VolatilityBreakoutStrategy:
-    
-    def __init__(self):
-        pass
-
-    def signals(self, prices: pd.Series) -> pd.Series:
-        pass
-```
-
-```python
-# backtester/broker.py
-class Broker:
-    def __init__(self, cash: float = 1_000_000):
-        self.cash = cash
-        self.position = 0
-
-    def market_order(self, side: str, qty: int, price: float):
-        pass
-```
-
-```python
-# backtester/engine.py
-import pandas as pd
-
-class Backtester:
-    def __init__(self, strategy, broker):
-        self.strategy = strategy
-        self.broker = broker
-
-    def run(self, prices: pd.Series):
-        pass
-```
-
----
-
-### Example Fixtures & Mocks
-
-```python
-# tests/conftest.py
-import numpy as np, pandas as pd, pytest
-from backtester.strategy import VolatilityBreakoutStrategy
-from backtester.broker import Broker
-
-@pytest.fixture
-def prices():
-    # deterministic rising series
-    return pd.Series(np.linspace(100, 120, 200))
-
-@pytest.fixture
-def strategy():
-    return VolatilityBreakoutStrategy()
-
-@pytest.fixture
-def broker():
-    return Broker(cash=1_000)
-```
-
-```python
-# tests/test_strategy.py
-def test_signals_length(strategy, prices):
-    sig = strategy.signals(prices)
-    assert len(sig) == len(prices)
-```
-
-```python
-# tests/test_broker.py
-import pytest
-
-def test_buy_and_sell_updates_cash_and_pos(broker):
-    broker.market_order("BUY", 2, 10.0)
-    assert (broker.position, broker.cash) == (2, 1000 - 20.0)
-
-def test_rejects_bad_orders(broker):
-    with pytest.raises(ValueError):
-        broker.market_order("BUY", 0, 10)
-```
-
-```python
-# tests/test_engine.py
-from unittest.mock import MagicMock
-from backtester.engine import Backtester
-
-def test_engine_uses_tminus1_signal(prices, broker, strategy, monkeypatch):
-    # Force exactly one buy at t=10 by controlling signals
-    fake_strategy = MagicMock()
-    fake_strategy.signals.return_value = prices*0
-    fake_strategy.signals.return_value.iloc[9] = 1  # triggers buy at t=10
-    bt = Backtester(fake_strategy, broker)
-    eq = bt.run(prices)
-    assert broker.position == 1
-    assert broker.cash == 1000 - float(prices.iloc[10])
 ```
 
 ---
