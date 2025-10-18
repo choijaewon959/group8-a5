@@ -1,6 +1,6 @@
-import pandas as pd
 from strategy import VolatilityBreakoutStrategy
-from engine import *
+from broker import Broker
+import pandas as pd
 
 class Backtester:
     def __init__(self, strategy, broker):
@@ -12,3 +12,9 @@ class Backtester:
 
         for idx, sig in enumerate(signals):
             self.broker.market_order(sig[0], 1, prices[idx])
+
+backT = Backtester(VolatilityBreakoutStrategy(), Broker())
+#prices = pd.read_csv('market_prices.csv')
+backT.run(prices)
+
+
