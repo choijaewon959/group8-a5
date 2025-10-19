@@ -6,7 +6,7 @@
 
 A lightweight, deterministic daily backtesting system for quantitative trading strategies with comprehensive testing and CI/CD pipeline.
 
-## 🏗️ Design Architecture
+## Design Architecture
 
 ### Core Components
 
@@ -15,15 +15,7 @@ A lightweight, deterministic daily backtesting system for quantitative trading s
 * **Broker** (`broker.py`): Simulates order execution with cash/position tracking (no slippage/fees)
 * **Backtester** (`engine.py`): Orchestrates end-of-day trading loop: signal generation → order execution → performance tracking
 
-### Design Principles
-
-- **Deterministic**: No randomness for reproducible testing
-- **Modular**: Clear separation of concerns between components
-- **Testable**: Each component can be unit tested in isolation
-- **Error Handling**: Comprehensive validation and meaningful error messages
-- **Type Hints**: Full type annotation for better code maintainability
-
-## � Repository Structure
+## Repository Structure
 
 ```
 group8-a5/
@@ -47,7 +39,7 @@ group8-a5/
 └── README.md               # This file
 ```
 
-## 🚀 How to Run Tests
+## How to Run Tests
 
 ### Prerequisites
 ```bash
@@ -71,6 +63,8 @@ coverage report -m
 ```
 
 ### Generate Coverage Report
+![Coverage Report Snapshot](./img/cov-html-screenshot.png)
+
 ```bash
 # Terminal report
 coverage report -m
@@ -85,9 +79,11 @@ open htmlcov/index.html
 coverage report --fail-under=90
 ```
 
-## 🔄 CI/CD Pipeline Status
+## CI/CD Pipeline Status
 
 ![CI Status](https://github.com/choijaewon959/group8-a5/actions/workflows/ci.yml/badge.svg)
+[![CICD Success](./img/ci-cd-success-remote.png)]
+
 
 ### Pipeline Configuration
 - **Trigger**: Push and Pull Request events
@@ -117,7 +113,9 @@ jobs:
       - run: coverage report --fail-under=90
 ```
 
-## 📊 Coverage Summary
+## Coverage Summary
+![Coverage Report Snapshot](./img/test-success-remote.png)
+_View the full HTML coverage report: [htmlcov/index.html](htmlcov/index.html)_
 
 ### Current Coverage: **100%** ✅
 
@@ -138,10 +136,10 @@ TOTAL                       52      0     18      0   100%
 - **Minimum Threshold**: 90%
 - **Report**: Shows missing lines and branch coverage
 
-## 🧪 Testing Strategy
+## Testing Strategy
 
 ### Test Fixtures (`conftest.py`)
-- **prices**: Deterministic rising price series (100→120, 200 points)
+- **prices**: Deterministic rising price series
 - **strategy**: Default VolatilityBreakoutStrategy instance
 - **broker**: Broker with $1,000 initial cash
 
@@ -156,7 +154,7 @@ TOTAL                       52      0     18      0   100%
 - Error conditions (negative prices, short data series)
 - Boundary conditions (zero quantities, exact matches)
 
-## 📈 Example Usage
+## Example Usage
 
 ```python
 from backtester.engine import Backtester
@@ -175,7 +173,7 @@ backtester = Backtester(strategy, broker)
 final_equity = backtester.run(pd.Series(data.values.ravel()))
 ```
 
-## ✅ Deliverables Status
+## Deliverables Status
 
 - ✅ **Code Components**: All four core components implemented with clean, readable code
 - ✅ **Unit Tests**: Comprehensive test suite with 17 passing tests using shared fixtures
