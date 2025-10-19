@@ -86,7 +86,7 @@ coverage report --fail-under=90
 ## CI/CD Pipeline Status
 
 ![CI Status](https://github.com/choijaewon959/group8-a5/actions/workflows/ci.yml/badge.svg)
-[![CICD Success](./img/ci-cd-success-remote.png)]
+![CICD Success](./img/ci-cd-success-remote.png)
 
 
 ### Pipeline Configuration
