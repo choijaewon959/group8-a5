@@ -1,6 +1,9 @@
-from strategy import VolatilityBreakoutStrategy
-from broker import Broker
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from backtester.strategy import VolatilityBreakoutStrategy
+from backtester.broker import Broker
 import pandas as pd
+from backtester.price_loader import load_data
 
 class Backtester:
     def __init__(self, strategy, broker):
@@ -8,13 +11,19 @@ class Backtester:
         self.broker = broker
 
     def run(self, prices: pd.Series):
-        signals = self.strategy.run(prices)
+        signals = self.strategy.signals(prices)
 
-        for idx, sig in enumerate(signals):
-            self.broker.market_order(sig[0], 1, prices[idx])
+        signals = signals.replace({1:"BUY", 0:"HOLD", -1:"SELL"})
 
+        for idx, sig in enumerate(signals[:-1]):
+            self.broker.market_order(sig, 1, prices[idx+1])
+
+        equity = self.broker.cash + self.broker.position * prices.iloc[-1]
+        return equity
+"""
+data = load_data()
 backT = Backtester(VolatilityBreakoutStrategy(), Broker())
-#prices = pd.read_csv('market_prices.csv')
-backT.run(prices)
+backT.run(pd.Series(data.values.ravel()))
+"""
 
 
