@@ -1,6 +1,4 @@
 import numpy as np, pandas as pd, pytest
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from backtester.strategy import VolatilityBreakoutStrategy
 from backtester.broker import Broker
 

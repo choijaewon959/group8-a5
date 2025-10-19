@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 class VolatilityBreakoutStrategy:
     def __init__(self, k=0.5, window=10):

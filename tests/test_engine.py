@@ -1,10 +1,6 @@
 # tests/test_engine.py
 from unittest.mock import MagicMock
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from backtester.engine import Backtester
-from backtester.strategy import VolatilityBreakoutStrategy
-import pandas as pd
 
 # Force exactly one buy at t=10 by controlling signals
 def test_engine_uses_tminus1_signal(prices, broker, strategy, monkeypatch):
@@ -13,8 +9,8 @@ def test_engine_uses_tminus1_signal(prices, broker, strategy, monkeypatch):
     fake_strategy.signals.return_value.iloc[9] = 1  # triggers buy at t=10
     bt = Backtester(fake_strategy, broker)
     eq = bt.run(prices)
-    assert broker.position == 0
-    # assert broker.cash == 1000 - float(prices.iloc[10])
+    assert broker.position == 1
+    assert broker.cash == 1000 - float(prices.iloc[10])
 
 
 #test final equity matches cash + pos*price
