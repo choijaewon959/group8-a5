@@ -1,10 +1,6 @@
 # tests/test_engine.py
 from unittest.mock import MagicMock
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from backtester.engine import Backtester
-from backtester.strategy import VolatilityBreakoutStrategy
-import pandas as pd
 
 # Force exactly one buy at t=10 by controlling signals
 def test_engine_uses_tminus1_signal(prices, broker, strategy, monkeypatch):
