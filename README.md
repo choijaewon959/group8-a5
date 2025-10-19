@@ -20,7 +20,7 @@ A lightweight, deterministic daily backtesting system for quantitative trading s
 ```
 group8-a5/
 ├── backtester/                 # Core trading system
-│   ├── broker.py              # Order execution and portfolio management
+│   ├── broker.py              # Order execution and portfolio 
 │   ├── engine.py              # Main backtesting engine
 │   ├── price_loader.py        # Market data loading
 │   └── strategy.py            # Volatility breakout strategy
@@ -31,6 +31,10 @@ group8-a5/
 │   └── test_strategy.py      # Strategy component tests
 ├── data/
 │   └── market_data.csv       # Sample market data
+├── img/                       # Documentation images and screenshots
+│   ├── ci-cd-success-remote.png
+│   ├── cov-html-screenshot.png
+│   └── test-success-remote.png
 ├── .github/workflows/
 │   └── ci.yml               # GitHub Actions CI pipeline
 ├── htmlcov/                 # Coverage HTML reports
