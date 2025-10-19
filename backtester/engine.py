@@ -1,7 +1,4 @@
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from backtester.strategy import VolatilityBreakoutStrategy
-from backtester.broker import Broker
+
 import pandas as pd
 from backtester.price_loader import load_data
 
